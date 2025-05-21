@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        body{
+            background-color: rgb(31, 30, 58);
+        }
+        video{
+            border-radius: 20px;
+            
+        }
+        div{
+            display:inline-block;
+            position: relative;
+        }
+
+        .main{
+            border: 2px skyblue solid;
+            position: relative;
+            /* width: 200px; */
+            bottom: 500px;
+            right: 95px;
+            left:1050px;
+            border-radius: 15px;
+            padding:0px 10px;
+            padding-top: 0px;
+            background-color: skyblue;
+            font-size: 20px;
+           
+        }
+
+        h3{
+            text-align: center;
+            font-size: 22px;
+            font-weight: bold;
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+        }
+        li{
+            list-style-type: none;
+            color:white;
+            align-items:center;
+            text-align: center;
+            padding-right: 45px;
+            
+            
+        }
+    
+        button,input{
+            border: 2px rgb(0, 0, 0) solid;
+            border-radius: 10px;
+            font-size: 18px;
+            align-items: center;
+            text-align: center;
+        }
+
+        button:active{
+            background-color: green;
+            border: 2px green solid;
+            border-radius: 20px;
+            outline-color: white;
+            outline: auto;
+            outline-offset: 5px;
+        }
+        img{
+            position: relative;
+            left:85px;
+            width: 100px;          
+        }
+    </style>
+</head>
+<body>
+<div class="video">
+    <video src="weather.mp4" autoplay loop muted playsinline style="width: 76%; height:70%;"></video>
+
+</div>
+<div class="main">
+    <h3>Weather Report</h3>
+    <input type="text" id="inputId" placeholder="Enter Your City Name"/>
+    <button id="buttonId">Search</button>
+    <ul id="unorderListId">
+
+    </ul>
+
+</div>
+
+    <script>
+
+        let inputElement = document.getElementById("inputId");
+        let buttonElement = document.getElementById('buttonId');
+        let unorderListElement = document.getElementById("unorderListId");
+        let city;
+        let weatherData = [];
+        let weatherCurrent = [];
+
+        buttonElement.addEventListener("click",()=>{
+
+            if(inputElement.value != ""){
+                city = inputElement.value;
+            
+                unorderListElement.textContent = "";
+                fetch(`http://api.weatherapi.com/v1/current.json?key=09eeeb80d02a41e58e7114823250904&q=${city}&aqi=no`)
+                .then(value=>{
+                    return value.json();
+                })
+                .then(data=>{
+                    weatherData = data.location;
+                    weatherCurrent = data.current;
+                    console.log(weatherCurrent);
+                    console.log(weatherData);
+
+                    let locationElement = document.createElement('li');
+                    locationElement.textContent = weatherData.name+" - "+weatherData.region+" - "+weatherData.country;
+                    unorderListElement.appendChild(locationElement);
+
+                    let timeElement = document.createElement('li');
+                    timeElement.textContent = "Time zone: "+weatherData.tz_id;
+                    unorderListElement.appendChild(timeElement);
+
+                    let iconElement = document.createElement('img');
+                    iconElement.src = "https:"+weatherCurrent.condition.icon;
+                    unorderListElement.appendChild(iconElement);
+                    console.log(weatherCurrent.condition.icon);
+
+                    let tempElement = document.createElement('li');
+                    tempElement.textContent = "Temperature: "+weatherCurrent.temp_c+"  °C"
+                    unorderListElement.appendChild(tempElement);
+
+                    let level = document.createElement("li");
+                    level.textContent = weatherCurrent.condition.text;
+                    unorderListElement.appendChild(level);
+
+
+                    let windElement = document.createElement('li');
+                    windElement.textContent = "Wind Speed: "+ weatherCurrent.wind_kph+"KPH";
+                    unorderListElement.appendChild(windElement);
+
+
+                    
+                    
+                    
+                })
+                .catch(error=>{
+                    console.log(error);
+                })
+          }
+          else{
+               unorderListElement.textContent = "";
+               let errorElement = document.createElement('li')
+               errorElement.textContent = "Please Enter Your City Name";
+               unorderListElement.appendChild(errorElement);
+               console.log(errorElement);
+               
+          }
+    
+        });
+
+        
+
+    
+    </script>
+    
+</body>
+</html>
