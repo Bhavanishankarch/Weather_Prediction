@@ -1,167 +1,230 @@
-<!DOCTYPE html>
+]<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Weather Report</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+<style>
+  * {
+    box-sizing: border-box;
+    margin: 0; padding: 0;
+    font-family: 'Poppins', sans-serif;
+  }
+  body, html {
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+  }
 
-    <style>
-        body{
-            background-color: rgb(31, 30, 58);
-        }
-        video{
-            border-radius: 20px;
-            
-        }
-        div{
-            display:inline-block;
-            position: relative;
-        }
-
-        .main{
-            border: 2px skyblue solid;
-            position: relative;
-            /* width: 200px; */
-            bottom: 500px;
-            right: 95px;
-            left:1050px;
-            border-radius: 15px;
-            padding:0px 10px;
-            padding-top: 0px;
-            background-color: skyblue;
-            font-size: 20px;
-           
-        }
-
-        h3{
-            text-align: center;
-            font-size: 22px;
-            font-weight: bold;
-            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-        }
-        li{
-            list-style-type: none;
-            color:white;
-            align-items:center;
-            text-align: center;
-            padding-right: 45px;
-            
-            
-        }
+ 
+  .video-background video {
     
-        button,input{
-            border: 2px rgb(0, 0, 0) solid;
-            border-radius: 10px;
-            font-size: 18px;
-            align-items: center;
-            text-align: center;
-        }
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw;
+    height: 100vh;
+    object-fit: cover;
+    z-index: -1;
+    filter: brightness(1);
+    border-radius: 20px;
 
-        button:active{
-            background-color: green;
-            border: 2px green solid;
-            border-radius: 20px;
-            outline-color: white;
-            outline: auto;
-            outline-offset: 5px;
-        }
-        img{
-            position: relative;
-            left:85px;
-            width: 100px;          
-        }
-    </style>
+    max-width: 100%;
+    max-height: 100%;
+  }
+  @media (max-width: 480px) {
+    .video-background video {
+      border-radius: 10px;
+    }
+  }
+
+  .container {
+    position: relative;
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+  }
+
+ 
+  .main {
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 25px;
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    padding: 40px 35px;
+    width: 380px;
+    max-width: 90vw;
+    box-shadow: 0 15px 35px rgba(0, 198, 255, 0.3);
+    color: white;
+    text-align: center;
+    cursor: default;
+  }
+
+  h3 {
+    font-size: 30px;
+    font-weight: 600;
+    margin-bottom: 25px;
+    letter-spacing: 1px;
+    text-shadow: 0 0 5px rgba(0,198,255,0.8);
+  }
+
+  input, button {
+    width: 100%;
+    padding: 14px 18px;
+    margin: 12px 0;
+    border-radius: 15px;
+    font-size: 18px;
+    border: none;
+    outline: none;
+    transition: box-shadow 0.3s ease, background-color 0.3s ease;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+  }
+
+  input {
+    background-color: rgba(255, 255, 255, 0.2);
+    color: white;
+    text-align: center;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    box-shadow: inset 0 0 8px rgba(255, 255, 255, 0.3);
+  }
+
+  input::placeholder {
+    color: black;
+    font-style: italic;
+  }
+
+  input:focus {
+    box-shadow: 0 0 15px 2px #00c6ff;
+    background-color: rgba(255, 255, 255, 0.3);
+    color: #fff;
+  }
+
+  button {
+    background: linear-gradient(90deg, #0072ff, #00c6ff);
+    color: white;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 6px 20px rgba(0, 198, 255, 0.5);
+  }
+
+  button:hover {
+    box-shadow: 0 0 25px #00c6ff;
+    transform: scale(1.05);
+  }
+
+  button:active {
+    transform: scale(0.98);
+    box-shadow: 0 0 15px #0072ff;
+  }
+
+  ul {
+    margin-top: 25px;
+    padding: 0;
+    list-style: none;
+    min-height: 150px;
+    opacity: 0;
+    animation: fadeIn 0.8s ease forwards;
+  }
+
+  li {
+    padding: 10px 0;
+    font-size: 20px;
+    text-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
+  }
+
+  li img {
+    width: 100px;
+    margin: 15px auto;
+    display: block;
+    filter: drop-shadow(0 0 5px #00c6ff);
+  }
+
+  @keyframes fadeIn {
+    to {
+      opacity: 1;
+    }
+  }
+</style>
 </head>
 <body>
-<div class="video">
-    <video src="weather.mp4" autoplay loop muted playsinline style="width: 76%; height:70%;"></video>
 
+<div class="video-background">
+  <video src="weather.mp4" autoplay loop muted playsinline></video>
 </div>
-<div class="main">
+
+<div class="container">
+  <div class="main">
     <h3>Weather Report</h3>
-    <input type="text" id="inputId" placeholder="Enter Your City Name"/>
+    <input type="text" id="inputId" placeholder="Enter Your City Name" />
     <button id="buttonId">Search</button>
-    <ul id="unorderListId">
-
-    </ul>
-
+    <ul id="unorderListId"></ul>
+  </div>
 </div>
 
-    <script>
+<script>
+  const inputElement = document.getElementById("inputId");
+  const buttonElement = document.getElementById("buttonId");
+  const unorderListElement = document.getElementById("unorderListId");
 
-        let inputElement = document.getElementById("inputId");
-        let buttonElement = document.getElementById('buttonId');
-        let unorderListElement = document.getElementById("unorderListId");
-        let city;
-        let weatherData = [];
-        let weatherCurrent = [];
+  buttonElement.addEventListener("click", () => {
+    const city = inputElement.value.trim();
+    unorderListElement.innerHTML = ""; 
+    unorderListElement.style.opacity = 0;
 
-        buttonElement.addEventListener("click",()=>{
+    if (city !== "") {
+      fetch(`http://api.weatherapi.com/v1/current.json?key=09eeeb80d02a41e58e7114823250904&q=${city}&aqi=no`)
+        .then(res => res.json())
+        .then(data => {
+          if(data.error) throw new Error(data.error.message);
+          const { location, current } = data;
 
-            if(inputElement.value != ""){
-                city = inputElement.value;
-            
-                unorderListElement.textContent = "";
-                fetch(`http://api.weatherapi.com/v1/current.json?key=09eeeb80d02a41e58e7114823250904&q=${city}&aqi=no`)
-                .then(value=>{
-                    return value.json();
-                })
-                .then(data=>{
-                    weatherData = data.location;
-                    weatherCurrent = data.current;
-                    console.log(weatherCurrent);
-                    console.log(weatherData);
+          const locationElement = document.createElement("li");
+          locationElement.textContent = `${location.name}, ${location.region}, ${location.country}`;
+          unorderListElement.appendChild(locationElement);
 
-                    let locationElement = document.createElement('li');
-                    locationElement.textContent = weatherData.name+" - "+weatherData.region+" - "+weatherData.country;
-                    unorderListElement.appendChild(locationElement);
+          const timeElement = document.createElement("li");
+          timeElement.textContent = `Timezone: ${location.tz_id}`;
+          unorderListElement.appendChild(timeElement);
 
-                    let timeElement = document.createElement('li');
-                    timeElement.textContent = "Time zone: "+weatherData.tz_id;
-                    unorderListElement.appendChild(timeElement);
+          const iconElement = document.createElement("img");
+          iconElement.src = "https:" + current.condition.icon;
+          unorderListElement.appendChild(iconElement);
 
-                    let iconElement = document.createElement('img');
-                    iconElement.src = "https:"+weatherCurrent.condition.icon;
-                    unorderListElement.appendChild(iconElement);
-                    console.log(weatherCurrent.condition.icon);
+          const tempElement = document.createElement("li");
+          tempElement.textContent = `Temperature: ${current.temp_c} °C`;
+          unorderListElement.appendChild(tempElement);
 
-                    let tempElement = document.createElement('li');
-                    tempElement.textContent = "Temperature: "+weatherCurrent.temp_c+"  °C"
-                    unorderListElement.appendChild(tempElement);
+          const level = document.createElement("li");
+          level.textContent = current.condition.text;
+          unorderListElement.appendChild(level);
 
-                    let level = document.createElement("li");
-                    level.textContent = weatherCurrent.condition.text;
-                    unorderListElement.appendChild(level);
+          const windElement = document.createElement("li");
+          windElement.textContent = `Wind Speed: ${current.wind_kph} KPH`;
+          unorderListElement.appendChild(windElement);
 
-
-                    let windElement = document.createElement('li');
-                    windElement.textContent = "Wind Speed: "+ weatherCurrent.wind_kph+"KPH";
-                    unorderListElement.appendChild(windElement);
-
-
-                    
-                    
-                    
-                })
-                .catch(error=>{
-                    console.log(error);
-                })
-          }
-          else{
-               unorderListElement.textContent = "";
-               let errorElement = document.createElement('li')
-               errorElement.textContent = "Please Enter Your City Name";
-               unorderListElement.appendChild(errorElement);
-               console.log(errorElement);
-               
-          }
-    
+          setTimeout(() => {
+            unorderListElement.style.opacity = 1;
+          }, 50);
+        })
+        .catch(error => {
+          const errorElement = document.createElement("li");
+          errorElement.textContent = error.message || "City not found or network error.";
+          unorderListElement.appendChild(errorElement);
+          unorderListElement.style.opacity = 1;
         });
+    } else {
+      const errorElement = document.createElement("li");
+      errorElement.textContent = "Please enter your city name.";
+      unorderListElement.appendChild(errorElement);
+      unorderListElement.style.opacity = 1;
+    }
+  });
+</script>
 
-        
-
-    
-    </script>
-    
 </body>
 </html>
