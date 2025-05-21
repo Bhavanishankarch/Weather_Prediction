@@ -177,7 +177,7 @@
     unorderListElement.style.opacity = 0;
 
     if (city !== "") {
-      fetch(`http://api.weatherapi.com/v1/current.json?key=09eeeb80d02a41e58e7114823250904&q=${city}&aqi=no`)
+      fetch(`https://api.weatherapi.com/v1/current.json?key=09eeeb80d02a41e58e7114823250904&q=${city}&aqi=no`)
         .then(res => res.json())
         .then(data => {
           if(data.error) throw new Error(data.error.message);
